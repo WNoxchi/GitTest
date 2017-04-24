@@ -6,24 +6,44 @@ from dnaseqlib import *
 ### Utility classes ###
 
 # Maps integer keys to a set of arbitrary values.
-class Multidict:
+class Multidict:                            # 23-Apr-2017 20:50 - 21:00
     # Initializes a new multi-value dictionary, and adds any key-value
     # 2-tuples in the iterable sequence pairs to the data structure.
     def __init__(self, pairs=[]):
-        raise Exception("Not implemented!")
+        # raise Exception("Not implemented!")
+        self.dict = {}
+        # if key unique: add; if not: append
+        for pair in pairs:
+            if not dict.has_key(pair[0]):
+                self.dict[pair[0]] = [pair[1]]
+            else:
+                self.dict[pair[0]].append(pair[1])
     # Associates the value v with the key k.
     def put(self, k, v):
-        raise Exception("Not implemented!")
+        # raise Exception("Not implemented!")
+        if self.dict.has_key(k):
+            self.dict[k].append(v)
+        else:
+            self.dict[k] = [v]
     # Gets any values that have been associated with the key k; or, if
     # none have been, returns an empty sequence.
     def get(self, k):
-        raise Exception("Not implemented!")
+        # raise Exception("Not implemented!")
+        if self.dict.has_key(k):
+            return self.dict[k]
+        else:
+            return []
 
 # Given a sequence of nucleotides, return all k-length subsequences
 # and their hashes.  (What else do you need to know about each
 # subsequence?)
-def subsequenceHashes(seq, k):
-    raise Exception("Not implemented!")
+def subsequenceHashes(seq, k):              # 23-Apr-2017 19:05 - 20:17
+    # raise Exception("Not implemented!")
+    subseq = kfasta.subsequences(seq, k)
+    RollingHash(subseq)
+    while subseq != '':
+        yield current_hash(), subseq
+
 
 # Similar to subsequenceHashes(), but returns one k-length subsequence
 # every m nucleotides.  (This will be useful when you try to use two
@@ -35,8 +55,20 @@ def intervalSubsequenceHashes(seq, k, m):
 # subsequences of length k.  The sequences a and b should be iterators
 # that return nucleotides.  The table is built by computing one hash
 # every m nucleotides (for m >= k).
-def getExactSubmatches(a, b, k, m):
+def getExactSubmatches(a, b, k, m):         # 23-Apr-2017 21:14 -
     raise Exception("Not implemented!")
+    x, y = -k, -k
+    while True:
+        subseq_a = subsequenceHashes(a, k)
+        x += k
+        y = -k
+        while True:
+            subseq_b = subsequenceHashes(b, k)
+            y += k
+            if subseq_a[0] == subseq_b[0]:
+                if subseq_a[1] == subseq_b[1]:
+                    yield (x, y)
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:
