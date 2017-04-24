@@ -55,7 +55,7 @@ def intervalSubsequenceHashes(seq, k, m):
 # subsequences of length k.  The sequences a and b should be iterators
 # that return nucleotides.  The table is built by computing one hash
 # every m nucleotides (for m >= k).
-def getExactSubmatches(a, b, k, m):         # 23-Apr-2017 21:14 -
+def getExactSubmatches(a, b, k, m):         # 23-Apr-2017 21:14 - 21:38
     raise Exception("Not implemented!")
     x, y = -k, -k
     while True:
